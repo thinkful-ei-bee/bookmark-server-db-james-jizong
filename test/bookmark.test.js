@@ -22,11 +22,14 @@ describe('Bookmarks Endpoints',function(){
   afterEach('cleanup',()=>db('bookmarks').truncate())
   describe('Get /bookmarks',()=>{
   
-   context('Given no bookmarks',() => {  return supertest(app)
+   context('Given no bookmarks',() => {  
+     it('GET /bookmarks response with 200 and an empty array',()=>{return supertest(app)
     .get('/bookmarks')
     .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
-    .expect(200,[])})
+    .expect(200,[])})})
   })
+
+  
   context('Given there are bookmarks in the database',()=>{
     const testBookmarks = makeBookmarkArrays()
     beforeEach('insert bookmarks',()=>{
@@ -42,9 +45,42 @@ describe('Bookmarks Endpoints',function(){
       .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
       .expect(200,testBookmarks)
     })
+
+
+
   })
 
+  describe('GET /bookmarks/bookId',()=>{
+    context('Given there are no bookmarks in the database',()=>{
+      it(`respond with 404`,()=>{
+        const bookId = 12345
+        return supertest(app)
+        .get(`/bookmarks/${bookId}`)
+        .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
+        .expect(404,{ error: { message: `Bookmark doesn't exist`}})
+      })
+    })
 
+    context('Given there are bookmarks in the database',()=>{
+      const testBookmarks = makeBookmarkArrays()
+      beforeEach('insert bookmarks',()=>{
+        return db
+        .into('bookmarks')
+        .insert(testBookmarks)})
+
+      it(`respond with 200,and bookmark with id return`,()=>{
+        
+        const bookId = 3
+        const expectedBookmark = testBookmarks[bookId-1]
+        return supertest(app)
+        .get(`/bookmarks/${bookId}`)
+        .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
+        .expect(200,expectedBookmark)
+      })
+      
+    })
+
+  })
 
 
 })

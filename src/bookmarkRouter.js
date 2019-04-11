@@ -4,15 +4,30 @@ const bodyParser = express.json()
 const logger = require('./logger')
 const books=[]
 const uuid = require('uuid/v4')
+const BookmarkService = require('./bookmarks-service')
+
+const serializeBookmark = bookmark => ({
+  id: bookmark.id,
+  title: bookmark.title,
+  url: bookmark.url,
+  description: bookmark.description,
+  rating: Number(bookmark.rating),
+})
 
 bookmarkRouter
 .route('/bookmarks')
-.get((req,res)=>{
-  if(books.length===0){
-    logger.error(`There is no book in the database`);
-    return res.status(200).send('there is no bookmark yet')
-  }
-  res.status(200).json(books)
+.get((req,res,next)=>{
+  const knexInstance = req.app.get('db')
+  BookmarkService.getAllBooks(knexInstance)
+  .then(bookmarks=>{
+    res.json(bookmarks.map(serializeBookmark))
+  }).catch(next)
+
+  // if(books.length===0){
+  //   logger.error(`There is no book in the database`);
+  //   return res.status(200).send('there is no bookmark yet')
+  // }
+  // res.status(200).json(books)
 })
 
 .post(bodyParser,(req,res)=>{
@@ -42,14 +57,26 @@ bookmarkRouter
 
 bookmarkRouter
 .route('/bookmarks/:bookId')
-.get((req,res)=>{
+.get((req,res,next)=>{
+  const knexInstance = req.app.get('db')
   const {bookId}=req.params;
-  const bookFound = books.filter(book=>book.id===bookId)
-  if(bookFound.length===0){
-    logger.error(`book with id ${bookId} not found.`);
-    res.status(404).json({error:"book not found"})
-  }
-  res.json(bookFound)
+  console.log('test id',bookId)
+  BookmarkService.getById(knexInstance,bookId)
+  .then(bookmark=>{
+    if(!bookmark){
+      return res.status(404).json({
+        error:{message:`Bookmark doesn't exist`}
+      })
+    }
+    res.json(bookmark)
+  })
+  .catch(next)
+  // const bookFound = books.filter(book=>book.id===bookId)
+  // if(bookFound.length===0){
+  //   logger.error(`book with id ${bookId} not found.`);
+  //   res.status(404).json({error:"book not found"})
+  // }
+  // res.json(bookFound)
 
 })
 

@@ -12,3 +12,4 @@
 {"message":"There is no book in the database","level":"error","timestamp":"2019-04-10 16:13:49"}
 {"message":"There is no book in the database","level":"error","timestamp":"2019-04-10 16:14:12"}
 {"message":"There is no book in the database","level":"error","timestamp":"2019-04-10 16:14:27"}
+{"message":"Unauthorized request to path: /bookmarks","level":"error","timestamp":"2019-04-11 03:29:52"}

@@ -7,7 +7,7 @@ const {makeBookmarkArrays}=require('./bookmarks.fixtures')
 
 
 describe('Bookmarks Endpoints',function(){
-  console.log(process.env.TEST_DB_URL)
+
   let db
   before('make knex instance',()=>{
     db=knex({
@@ -20,6 +20,7 @@ describe('Bookmarks Endpoints',function(){
   after('disconnect from db',()=>db.destroy())
   
   afterEach('cleanup',()=>db('bookmarks').truncate())
+ 
   describe('Get /bookmarks',()=>{
   
    context('Given no bookmarks',() => {  
@@ -27,7 +28,7 @@ describe('Bookmarks Endpoints',function(){
     .get('/bookmarks')
     .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
     .expect(200,[])})})
-  })
+  
 
   
   context('Given there are bookmarks in the database',()=>{
@@ -49,6 +50,35 @@ describe('Bookmarks Endpoints',function(){
 
 
   })
+})
+describe.only(`POST Bookmarks`,()=>{
+context('create a bookmark',()=>{
+  it(`respond with 201 and return the new article `,()=>{
+    const newBookmark ={
+      title: "title5",
+      url: "http://www.google.com",
+      description: "desc5",
+      rating: 2
+    }
+    return supertest(app)
+      .post('/bookmarks')
+      .send(newBookmark)
+      .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
+      .expect(201)
+      .expect(res=>{
+          expect(res.body.title).to.eql(newBookmark.title)
+          expect(res.body.url).to.eql(newBookmark.url)
+          expect(res.body.description).to.eql(newBookmark.description)
+          expect(res.body.rating).to.eql(newBookmark.rating)
+          expect(res.body).to.have.property('id')
+          expect(res.headers.location).to.eql(`bookmarks/${res.body.id}`)
+      })
+
+  })
+})  
+
+
+})
 
   describe('GET /bookmarks/bookId',()=>{
     context('Given there are no bookmarks in the database',()=>{
@@ -79,6 +109,8 @@ describe('Bookmarks Endpoints',function(){
       })
       
     })
+
+
 
   })
 

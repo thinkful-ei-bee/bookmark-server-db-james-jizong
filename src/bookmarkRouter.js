@@ -15,7 +15,7 @@ const serializeBookmark = bookmark => ({
 })
 
 bookmarkRouter
-.route('/bookmarks')
+.route('/')
 .get((req,res,next)=>{
   const knexInstance = req.app.get('db')
   BookmarkService.getAllBooks(knexInstance)
@@ -30,33 +30,52 @@ bookmarkRouter
   // res.status(200).json(books)
 })
 
-.post(bodyParser,(req,res)=>{
-  const {title,url,desc=null,rating=null}=req.body
- 
-  if(!url || !title){
-    
-    url?logger.error('user did not supply url'):logger.error('user did not supply title')
-    
-    return res.status(400).json({ "message": "Attributes `title` and `url` required"})
+.post(bodyParser,(req,res,next)=>{
+  const {title,url,description=null,rating=null}=req.body
+  const newBookmark = {title,url,description,rating}
+  for (const [key,value] of Object.keys(newBookmark)){
+    if(value==null){
+      return res.status(400).json({
+        error:{message:`Missing '${key}' in request body`}
+      })
+      
+    }
   }
+    BookmarkService.insertBookmark(
+      req.app.get('db'),newBookmark
+    )
+    .then(bookmark=>{
+      res.status(201)
+      .location(`bookmarks/${bookmark.id}`)
+      .json(serializeBookmark(bookmark))
+    })
+    .catch(next)
+  })
+
+  // if(!url || !title){
+    
+  //   url?logger.error('user did not supply url'):logger.error('user did not supply title')
+    
+  //   return res.status(400).json({ "message": "Attributes `title` and `url` required"})
+  // }
   
 
-  if(url.length<=5||url.substring(0,4)!=='http'){
-    logger.error('user provided invalid url')
-    return res.status(400).json({"message": "Attribute `url` must be min length 5 and begin http(s)://"})
-  }
+  // if(url.length<=5||url.substring(0,4)!=='http'){
+  //   logger.error('user provided invalid url')
+  //   return res.status(400).json({"message": "Attribute `url` must be min length 5 and begin http(s)://"})
+  // }
 
-  if(Number(rating) <1 || Number(rating) >5){
-    logger.error('user provide invalid rating')
-    return res.status(400).json({ "message": "Attribute `rating` (optional) must be number between 1 and 5"})
-  }
-  const id=uuid()
-  books.push({id,title,url,desc,rating})
-  res.json(books)
-})
+  // if(Number(rating) <1 || Number(rating) >5){
+  //   logger.error('user provide invalid rating')
+  //   return res.status(400).json({ "message": "Attribute `rating` (optional) must be number between 1 and 5"})
+  // }
+  // const id=uuid()
+  // books.push({id,title,url,desc,rating})
+  // res.json(books)
+
 
 bookmarkRouter
-.route('/bookmarks/:bookId')
+.route('/:bookId')
 .get((req,res,next)=>{
   const knexInstance = req.app.get('db')
   const {bookId}=req.params;

@@ -13,6 +13,17 @@ const BookmarkService ={
     .first()
     
   },
+  insertBookmark(knex,newBookmark){
+    return knex
+    .insert(newBookmark)
+    .into('bookmarks')
+    .returning('*')
+
+    .then(row=>{
+      console.log(row)
+      return row[0]
+    })
+  }
 }
 
 module.exports = 

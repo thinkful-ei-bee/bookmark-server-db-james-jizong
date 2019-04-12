@@ -73,8 +73,32 @@ context('create a bookmark',()=>{
           expect(res.body).to.have.property('id')
           expect(res.headers.location).to.eql(`bookmarks/${res.body.id}`)
       })
+      .then(postRes=>{
+        supertest(app)
+          .get(`/bookmarks/${postRes.body.id}`)
+          .expect(postRes.body)
+      })
 
   })
+  const requireField = ['title','url','description','rating']
+  requireField.forEach(field=>{
+    const newBookmark ={
+      title: "title",
+      url: "http://www.google.com",
+      description: "desc",
+      rating: 2
+    }
+    it(`responds with 400 and an error message when the '${field}' is missing`,()=>{
+      delete newBookmark[field]
+      return supertest(app)
+        .post('/bookmarks')
+        .send(newBookmark)
+        .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
+        .expect(400,{error:{message:`Missing '${field}' in request body`}})
+    })
+
+  })
+
 })  
 
 

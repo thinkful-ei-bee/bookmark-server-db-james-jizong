@@ -33,14 +33,17 @@ bookmarkRouter
 .post(bodyParser,(req,res,next)=>{
   const {title,url,description=null,rating=null}=req.body
   const newBookmark = {title,url,description,rating}
-  for (const [key,value] of Object.keys(newBookmark)){
-    if(value==null){
+  // https://repl.it/@JizongL/Objectkeys-and-Objectentries
+    // the above link record a mistake that I made when 
+  for (const [key,value] of Object.entries(newBookmark))
+   { console.log(value,'test value')
+    if(!value){
       return res.status(400).json({
         error:{message:`Missing '${key}' in request body`}
       })
       
-    }
-  }
+    }}
+  
     BookmarkService.insertBookmark(
       req.app.get('db'),newBookmark
     )

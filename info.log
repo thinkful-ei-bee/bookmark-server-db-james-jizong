@@ -18,3 +18,25 @@
 {"message":"Unauthorized request to path: /bookmarks","level":"error","timestamp":"2019-04-12 18:37:17"}
 {"message":"Unauthorized request to path: /bookmarks","level":"error","timestamp":"2019-04-12 18:40:46"}
 {"message":"Unauthorized request to path: /bookmarks","level":"error","timestamp":"2019-04-12 18:44:38"}
+{"name":"error","length":211,"severity":"ERROR","code":"23502","detail":"Failing row contains (1, null, http://www.google.com, desc, 2).","schema":"public","table":"bookmarks","column":"title","file":"execMain.c","line":"2042","routine":"ExecConstraints","level":"error","timestamp":"2019-04-12 19:26:42"}
+{"name":"error","length":191,"severity":"ERROR","code":"23502","detail":"Failing row contains (1, title, null, desc, 2).","schema":"public","table":"bookmarks","column":"url","file":"execMain.c","line":"2042","routine":"ExecConstraints","level":"error","timestamp":"2019-04-12 19:26:42"}
+{"name":"error","length":213,"severity":"ERROR","code":"23502","detail":"Failing row contains (11, null, http://www.google.com, desc5, 2).","schema":"public","table":"bookmarks","column":"title","file":"execMain.c","line":"2042","routine":"ExecConstraints","level":"error","timestamp":"2019-04-12 15:26:50"}
+{"name":"error","length":213,"severity":"ERROR","code":"23502","detail":"Failing row contains (12, null, http://www.google.com, desc5, 2).","schema":"public","table":"bookmarks","column":"title","file":"execMain.c","line":"2042","routine":"ExecConstraints","level":"error","timestamp":"2019-04-12 15:28:31"}
+{"level":"error","timestamp":"2019-04-12 15:29:22"}
+{"level":"error","timestamp":"2019-04-12 15:29:50"}
+{"level":"error","timestamp":"2019-04-12 15:33:28"}
+{"level":"error","timestamp":"2019-04-12 19:44:05"}
+{"level":"error","timestamp":"2019-04-12 19:44:05"}
+{"level":"error","timestamp":"2019-04-12 19:44:06"}
+{"level":"error","timestamp":"2019-04-12 19:44:06"}
+{"level":"error","timestamp":"2019-04-12 19:44:06"}
+{"level":"error","timestamp":"2019-04-12 19:46:27"}
+{"level":"error","timestamp":"2019-04-12 19:46:27"}
+{"level":"error","timestamp":"2019-04-12 19:46:27"}
+{"level":"error","timestamp":"2019-04-12 19:46:27"}
+{"level":"error","timestamp":"2019-04-12 19:46:27"}
+{"level":"error","timestamp":"2019-04-12 19:47:12"}
+{"level":"error","timestamp":"2019-04-12 19:47:12"}
+{"level":"error","timestamp":"2019-04-12 19:47:12"}
+{"level":"error","timestamp":"2019-04-12 19:47:12"}
+{"level":"error","timestamp":"2019-04-12 19:47:12"}

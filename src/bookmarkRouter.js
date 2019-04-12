@@ -3,14 +3,13 @@ const bookmarkRouter = express.Router()
 const bodyParser = express.json()
 const logger = require('./logger')
 const books=[]
-const uuid = require('uuid/v4')
 const BookmarkService = require('./bookmarks-service')
-
+const xss = require('xss')
 const serializeBookmark = bookmark => ({
-  id: bookmark.id,
-  title: bookmark.title,
-  url: bookmark.url,
-  description: bookmark.description,
+  id: xss(bookmark.id),
+  title: xss(bookmark.title),
+  url: xss(bookmark.url),
+  description: xss(bookmark.description),
   rating: Number(bookmark.rating),
 })
 

@@ -99,6 +99,25 @@ context('create a bookmark',()=>{
 
   })
 
+  const maliciousBookmark = {    
+    title: 'Naughty naughty very naughty <script>alert("xss");</script>',
+    url: 'http://google.com',
+    description: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
+    rating:3
+  }
+  it(`responds with 201 and posted malicious content`,()=>{
+    return supertest(app)
+      .post('/bookmarks')
+      .send(maliciousBookmark)
+      .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
+      .expect(201)
+      .expect(res=>{
+        expect(res.body.title).to.eql('Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;')
+        expect(res.body.description).to.eql('Bad image <img src=\"https://url.to.file.which/does-not.exist\">. But not <strong>all</strong> bad.')
+      })
+  })
+
+
 })  
 
 

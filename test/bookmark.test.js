@@ -98,7 +98,19 @@ context('create a bookmark',()=>{
     })
 
   })
-
+  it(`respond with 400 and an error message when rating is not between 1 and 5`,()=>{
+    const bookmarkWithBadRating ={
+      title: "title",
+      url: "http://www.google.com",
+      description: "desc",
+      rating: 6
+    }
+    return supertest(app)
+    .post('/bookmarks')
+    .send(bookmarkWithBadRating)
+    .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
+    .expect(400,{ error:{message:`rating must be between 1 and 5`}})
+  })
   const maliciousBookmark = {    
     title: 'Naughty naughty very naughty <script>alert("xss");</script>',
     url: 'http://google.com',
@@ -130,7 +142,7 @@ context('create a bookmark',()=>{
         return supertest(app)
         .get(`/bookmarks/${bookId}`)
         .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
-        .expect(404,{ error: { message: `Bookmark doesn't exist`}})
+        .expect(404,{ error: { message: `bookmark doesn't exist`}})
       })
     })
 
@@ -156,7 +168,7 @@ context('create a bookmark',()=>{
 
 
   })
-  describe.only(`DELETE bookmarks/:bookmark_id`,()=>{
+  describe(`DELETE bookmarks/:bookmark_id`,()=>{
     context(`Given there are no bookmark in the database`,()=>{
       it('respond with 404',()=>{
         const bookmark_id = 12345
@@ -176,7 +188,7 @@ context('create a bookmark',()=>{
       it('responds with 204 and remove the bookmark',()=>{
         const idToRemove = 3
         const expectedBookmarks = testBookmarks.filter(bookmark=>bookmark.id!==idToRemove)
-        console.log(expectedBookmarks,'test expected bookmarks')
+       
         return supertest(app)
           .delete(`/bookmarks/${idToRemove}`)
           .set('Authorization',`Bearer ${process.env.API_TOKEN}`)

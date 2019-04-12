@@ -6,7 +6,7 @@ const books=[]
 const BookmarkService = require('./bookmarks-service')
 const xss = require('xss')
 const serializeBookmark = bookmark => ({
-  id: xss(bookmark.id),
+  id: Number(bookmark.id),
   title: xss(bookmark.title),
   url: xss(bookmark.url),
   description: xss(bookmark.description),
@@ -78,20 +78,32 @@ bookmarkRouter
 
 bookmarkRouter
 .route('/:bookId')
-.get((req,res,next)=>{
-  const knexInstance = req.app.get('db')
-  const {bookId}=req.params;
-  console.log('test id',bookId)
-  BookmarkService.getById(knexInstance,bookId)
-  .then(bookmark=>{
+.all((req,res,next)=>{
+  
+  BookmarkService.getById(
+    req.app.get('db'),
+    req.params.bookId
+  )
+  .then(bookmark =>{
+    
     if(!bookmark){
-      return res.status(404).json({
-        error:{message:`Bookmark doesn't exist`}
-      })
+      return res.status(404).json(
+        {error:{message:`bookmark doesn't exist`}}
+      )
     }
-    res.json(bookmark)
+    res.bookmark = bookmark
+    next()
   })
   .catch(next)
+})
+
+.get((req,res,next)=>{
+
+    res.json(serializeBookmark(res.bookmark))
+  
+  })
+
+  
   // const bookFound = books.filter(book=>book.id===bookId)
   // if(bookFound.length===0){
   //   logger.error(`book with id ${bookId} not found.`);
@@ -99,20 +111,27 @@ bookmarkRouter
   // }
   // res.json(bookFound)
 
-})
 
 
-.delete((req,res)=>{
-  const {bookId} = req.params;
-  const index = books.findIndex(book => book.id===bookId)
-  if(index===-1){
-    logger.error(`book with id${bookId} not found`)
-    return res
-    .status(404)
-    .send("Book not found")
-  }
-  books.splice(index,1)
-  res.send('Deleted')
+
+.delete((req,res,next)=>{
+  BookmarkService.deleteBookmark(
+    req.app.get('db'),req.params.bookId)
+    .then(()=>{
+      res.status(204)
+      .send('deleted')
+      .end()
+    })
+    .catch(next)
+  // const index = books.findIndex(book => book.id===bookId)
+  // if(index===-1){
+  //   logger.error(`book with id${bookId} not found`)
+  //   return res
+  //   .status(404)
+  //   .send("Book not found")
+  // }
+  // books.splice(index,1)
+  // res.send('Deleted')
 })
 
 module.exports = bookmarkRouter

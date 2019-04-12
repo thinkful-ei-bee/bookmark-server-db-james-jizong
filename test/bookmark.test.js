@@ -51,7 +51,7 @@ describe('Bookmarks Endpoints',function(){
 
   })
 })
-describe.only(`POST Bookmarks`,()=>{
+describe(`POST Bookmarks`,()=>{
 context('create a bookmark',()=>{
   it(`respond with 201 and return the new article `,()=>{
     const newBookmark ={
@@ -103,7 +103,7 @@ context('create a bookmark',()=>{
     title: 'Naughty naughty very naughty <script>alert("xss");</script>',
     url: 'http://google.com',
     description: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
-    rating:3
+    rating:2
   }
   it(`responds with 201 and posted malicious content`,()=>{
     return supertest(app)
@@ -155,6 +155,30 @@ context('create a bookmark',()=>{
 
 
 
+  })
+  describe.only(`DELETE bookmarks/:bookmark_id`,()=>{
+    context('Given there are bookmark in the database',()=>{
+      const testBookmarks = makeBookmarkArrays()
+      beforeEach('insert bookmark',()=>{
+        return db
+        .into('bookmarks')
+        .insert(testBookmarks)
+      })
+      it('responds with 204 and remove the bookmark',()=>{
+        const idToRemove = 3
+        const expectedBookmarks = testBookmarks.filter(bookmark=>bookmark.id!==idToRemove)
+        console.log(expectedBookmarks,'test expected bookmarks')
+        return supertest(app)
+          .delete(`/bookmarks/${idToRemove}`)
+          .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
+          .expect(204)
+          .then(res=>{
+            supertest(app)
+              .get('/bookmarks')
+              .expect(expectedBookmarks)
+          })
+      })
+    })
   })
 
 

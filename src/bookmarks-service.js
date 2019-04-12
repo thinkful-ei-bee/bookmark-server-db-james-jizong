@@ -23,6 +23,11 @@ const BookmarkService ={
       console.log(row)
       return row[0]
     })
+  },
+  deleteBookmark(knex,id){
+    return knex
+          .from('bookmarks')
+          .where({id}).delete()
   }
 }
 

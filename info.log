@@ -41,3 +41,10 @@
 {"level":"error","timestamp":"2019-04-12 19:47:12"}
 {"level":"error","timestamp":"2019-04-12 19:47:12"}
 {"level":"error","timestamp":"2019-04-12 16:09:45"}
+{"name":"error","length":91,"severity":"ERROR","code":"22P02","file":"numutils.c","line":"62","routine":"pg_atoi","level":"error","timestamp":"2019-04-12 20:31:12"}
+{"name":"error","length":91,"severity":"ERROR","code":"22P02","file":"numutils.c","line":"62","routine":"pg_atoi","level":"error","timestamp":"2019-04-12 20:32:08"}
+{"name":"error","length":91,"severity":"ERROR","code":"22P02","file":"numutils.c","line":"62","routine":"pg_atoi","level":"error","timestamp":"2019-04-12 20:46:19"}
+{"level":"error","timestamp":"2019-04-12 16:47:49"}
+{"level":"error","timestamp":"2019-04-12 16:48:46"}
+{"name":"error","length":91,"severity":"ERROR","code":"22P02","file":"numutils.c","line":"62","routine":"pg_atoi","level":"error","timestamp":"2019-04-12 20:51:47"}
+{"name":"error","length":91,"severity":"ERROR","code":"22P02","file":"numutils.c","line":"62","routine":"pg_atoi","level":"error","timestamp":"2019-04-12 20:54:43"}

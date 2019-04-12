@@ -157,6 +157,15 @@ context('create a bookmark',()=>{
 
   })
   describe.only(`DELETE bookmarks/:bookmark_id`,()=>{
+    context(`Given there are no bookmark in the database`,()=>{
+      it('respond with 404',()=>{
+        const bookmark_id = 12345
+        return supertest(app)
+        .delete(`/bookmarks/${bookmark_id}`)
+        .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
+        .expect(404,{error:{message:`bookmark doesn't exist`}})
+      })
+    })
     context('Given there are bookmark in the database',()=>{
       const testBookmarks = makeBookmarkArrays()
       beforeEach('insert bookmark',()=>{

@@ -48,3 +48,4 @@
 {"level":"error","timestamp":"2019-04-12 16:48:46"}
 {"name":"error","length":91,"severity":"ERROR","code":"22P02","file":"numutils.c","line":"62","routine":"pg_atoi","level":"error","timestamp":"2019-04-12 20:51:47"}
 {"name":"error","length":91,"severity":"ERROR","code":"22P02","file":"numutils.c","line":"62","routine":"pg_atoi","level":"error","timestamp":"2019-04-12 20:54:43"}
+{"message":"Unauthorized request to path: /bookmarks/12345","level":"error","timestamp":"2019-04-12 20:59:19"}

@@ -40,6 +40,12 @@ bookmarkRouter
         error:{message:`rating must be between 1 and 5`}
       })
     }
+
+    if(url.slice(0,4)!=='http'){
+      return res.status(400).json({
+        error:{message:'url must starts with http or https'}
+      })
+    }
   
     BookmarkService.insertBookmark(
       req.app.get('db'),newBookmark

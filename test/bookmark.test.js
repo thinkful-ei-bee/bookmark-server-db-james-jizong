@@ -98,6 +98,19 @@ context('create a bookmark',()=>{
     })
 
   })
+  it(`respond with 400 and an error message when url does not start with http`,()=>{
+    const bookmarkWithBadUrl ={
+      title: "title",
+      url: "www.google.com",
+      description: "desc",
+      rating: 4}
+      return supertest(app)
+      .post('/bookmarks')
+      .send(bookmarkWithBadUrl)
+      .set('Authorization',`Bearer ${process.env.API_TOKEN}`)
+      .expect(400,{ error:{message:'url must starts with http or https'}})
+    
+  })
   it(`respond with 400 and an error message when rating is not between 1 and 5`,()=>{
     const bookmarkWithBadRating ={
       title: "title",

@@ -21,7 +21,7 @@ app.use(express.json())
 
 
 app.use(validateBearerToken)
-app.use('/bookmarks',bookmarkRouter)
+app.use('/api/bookmarks',bookmarkRouter)
 app.use(errHandler)
 
 

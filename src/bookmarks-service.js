@@ -13,6 +13,11 @@ const BookmarkService ={
     .first()
     
   },
+  updateBookmark(knex,id,bookmarkToUpdate){
+    return knex('bookmarks')
+    .where({id})
+    .update(bookmarkToUpdate)
+  },
   insertBookmark(knex,newBookmark){
     return knex
     .insert(newBookmark)
@@ -20,7 +25,7 @@ const BookmarkService ={
     .returning('*')
 
     .then(row=>{
-      console.log(row)
+      
       return row[0]
     })
   },

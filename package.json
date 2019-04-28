@@ -6,9 +6,10 @@
   "scripts": {
     "test": "mocha --require test/setup.js",
     "start": "node src/server.js",
-    "predeploy": "npm audit",
     "migrate": "postgrator --config postgrator-config.js",
-    "deploy": "git push herooku master",
+    "migrate-production": "postgrator --config postgrator-production-config.js",
+    "deploy": "git push heroku master",
+    "predeploy": "npm audit && npm run migrate-production",
     "dev": "nodemon src/server.js"
   },
   "keywords": [],
@@ -28,7 +29,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.0.2",
+    "mocha": "^6.1.4",
     "nodemon": "^1.18.10",
     "postgrator-cli": "^3.1.0",
     "supertest": "^4.0.2"

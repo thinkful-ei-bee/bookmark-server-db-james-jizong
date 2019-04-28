@@ -231,7 +231,7 @@ context('create a bookmark',()=>{
            .insert(testBookmarks)
        })
   
-       it.only('responds with 204 and updates the bookmark', () => {
+       it('responds with 204 and updates the bookmark', () => {
          const idToUpdate = 1
          const updateBookmark = {
           

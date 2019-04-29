@@ -58,3 +58,4 @@
 {"level":"error","timestamp":"2019-04-25 03:28:12"}
 {"level":"error","timestamp":"2019-04-25 03:29:15"}
 {"message":"Unauthorized request to path: /","level":"error","timestamp":"2019-04-28 14:10:02"}
+{"message":"Unauthorized request to path: /api/bookmarks","level":"error","timestamp":"2019-04-28 14:42:35"}

@@ -5,17 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --require test/setup.js",
-    "start": "node src/server.js",
+    "start": "node api.js && node src/server.js",
     "migrate": "postgrator --config postgrator-config.js",
     "migrate-production": "postgrator --config postgrator-production-config.js",
     "deploy": "git push heroku master",
     "predeploy": "npm audit && npm run migrate-production",
-    "dev": "nodemon src/server.js"
+    "dev": "node api.js && nodemon src/server.js"
   },
   "keywords": [],
   "engines": {
-   "node": "11.12.0"
-     },
+    "node": "11.12.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
